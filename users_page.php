@@ -205,16 +205,16 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
     
         if ($cropType == 'Maize') {
             // Best conditions for maize
-            $decisions[] = "1. **Soil**: Maize thrives in **loamy soil** with good drainage. Soil pH should be between 5.5 and 7.5.";
-            $decisions[] = "2. **Temperature**: Optimal temperature for maize growth is between **18°C and 27°C**.";
-            $decisions[] = "3. **Soil Depth**: Ensure that soil depth is at least **30 cm** for proper root development.";
-            $decisions[] = "4. **Spacing**: Plant seeds **25-30 cm apart**, with rows spaced about **75-90 cm apart**.";
-            $decisions[] = "5. **Planting**: The best time to plant maize is after the last frost when the soil is warm. Ensure that planting depth is about **5 cm**.";
-            $decisions[] = "6. **Irrigation**: Maize requires **regular watering**, especially during flowering and grain filling stages. Avoid waterlogging by ensuring proper drainage.";
-            $decisions[] = "7. **Fertilization**: Apply nitrogen-based fertilizers at planting and during the growth stages to boost yield.";
-            $decisions[] = "8. **Pest Control**: Consider using **organic or chemical fumigants** to control pests, especially during the early stages.";
-            $decisions[] = "9. **Land Preparation**: Prepare the land by **tilling** to improve soil aeration and remove weeds.";
-            $decisions[] = "10. **Harvesting**: Maize is typically ready for harvest **100-120 days after planting** depending on the variety. Harvest when kernels are fully matured and dry.";
+            $decisions[] = "1. Soil: Maize thrives in loamy soil with good drainage. Soil pH should be between 5.5 and 7.5.";
+            $decisions[] = "2. Temperature: Optimal temperature for maize growth is between 18°C and 27°C.";
+            $decisions[] = "3. Soil Depth: Ensure that soil depth is at least 30 cm for proper root development.";
+            $decisions[] = "4. Spacing: Plant seeds 25-30 cm apart, with rows spaced about 75-90 cm apart.";
+            $decisions[] = "5. Planting: The best time to plant maize is after the last frost when the soil is warm. Ensure that planting depth is about 5 cm.";
+            $decisions[] = "6. Irrigation: Maize requires regular watering, especially during flowering and grain filling stages. Avoid waterlogging by ensuring proper drainage.";
+            $decisions[] = "7. Fertilization: Apply nitrogen-based fertilizers at planting and during the growth stages to boost yield.";
+            $decisions[] = "8. Pest Control: Consider using organic or chemical fumigants to control pests, especially during the early stages.";
+            $decisions[] = "9. Land Preparation: Prepare the land by tilling to improve soil aeration and remove weeds.";
+            $decisions[] = "10. Harvesting: Maize is typically ready for harvest 100-120 days after planting depending on the variety. Harvest when kernels are fully matured and dry.";
 
 
             // Compare weather conditions with ideal conditions
@@ -246,7 +246,7 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
     
         // 3. Humidity and Fungal Risks
         if ($humidity > 70) {
-            $decisions[] = "High humidity levels ({$humidity}%) may promote fungal infections. Consider applying **fungicide** to prevent diseases.";
+            $decisions[] = "High humidity levels ({$humidity}%) may promote fungal infections. Consider applying fungicide to prevent diseases.";
         }
     
         // 4. Water Source and Irrigation Recommendations
@@ -264,13 +264,13 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
         }
     
         // 6. Tillage and Land Preparation
-        $decisions[] = "Land preparation should include **tillage** to break up compacted soil and remove weeds. Consider using a plow or disc harrow.";
+        $decisions[] = "Land preparation should include tillage to break up compacted soil and remove weeds. Consider using a plow or disc harrow.";
     
         // 7. Irrigation Schedule and Methods
-        $decisions[] = "Irrigation should be done every **7-10 days** during dry periods. Use **drip irrigation** for efficient water use.";
+        $decisions[] = "Irrigation should be done every 7-10 days during dry periods. Use drip irrigation for efficient water use.";
     
         // 8. Fumigation and Pest Control
-        $decisions[] = "Consider fumigating fields with **pest-specific fumigants** to control common maize pests such as **stem borers** and **armyworms**.";
+        $decisions[] = "Consider fumigating fields with pest-specific fumigants to control common maize pests such as stem borers and armyworms.";
     
         // 9. Crop Spacing and Population
         $decisions[] = "Ensure proper crop spacing (25-30 cm between plants) to allow air circulation and reduce competition for nutrients.";
