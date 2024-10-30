@@ -1,6 +1,6 @@
 <?php
-
-$apiKey = "9e3d1e02f89e5455b1a0e61cca97f497"; // Replace with your OpenWeatherMap API key
+    include "connect_db.php";
+    $apiKey = "9e3d1e02f89e5455b1a0e61cca97f497"; // Replace with your OpenWeatherMap API key
 
 // Check if latitude and longitude are set in the query string
 if (isset($_GET['lat']) && isset($_GET['lon'])) {
@@ -24,8 +24,15 @@ if (isset($_GET['lat']) && isset($_GET['lon'])) {
     $cloudCover1 = $weather['clouds']['all'];  // Cloud cover percentage
     $pressure1 = $weather['main']['pressure'];  // Atmospheric pressure in hPa
     $visibility1 = $weather['visibility'];  // Visibility in meters
-    $sunrise1 = date('H:i:s', $weather['sys']['sunrise']);  // Sunrise time (converted to a readable format)
-    $sunset1 = date('H:i:s', $weather['sys']['sunset']);  // Sunset time (converted to a readable format)
+
+    $timezone1 = new DateTimeZone('Africa/Lagos'); // Set your timezone
+    $sunrise1 = (new DateTime("@{$weather['sys']['sunrise']}"))->setTimezone($timezone1)->format('H:i:s');  // Sunrise time (converted to a readable format)
+    $sunset1 = (new DateTime("@{$weather['sys']['sunset']}"))->setTimezone($timezone1)->format('H:i:s');  // Sunset time (converted to a readable format)
+
+
+    // Get the current date
+    $currentDate = date('Y-m-d H:i:s'); // This will get the date in 'YYYY-MM-DD HH:MM:SS' format
+
 } else {
     echo "Location data not available.";
 }
@@ -46,118 +53,121 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
     }
     else
     {
-        // $apiData = file_get_contents('https://api.openweathermap.org/data/2.5/weather?q='. $_POST['cityBox'] .'&appid=9e3d1e02f89e5455b1a0e61cca97f497');
 
-        $apiData = file_get_contents('https://api.openweathermap.org/data/2.5/weather?q='. $_POST['demo'] .'&appid=9e3d1e02f89e5455b1a0e61cca97f497');
+        // Check if the form is submitted
+        if (isset($_POST['demo'])) {
+            $city = $_POST['demo'];
+            // $apiKey = '9e3d1e02f89e5455b1a0e61cca97f497';  // Replace with your OpenWeatherMap API key
+            $apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' . $city . '&appid=' . $apiKey;
 
-        // Assuming $weatherResult contains the decoded JSON response from the API
-        $weatherResult = json_decode($apiData, true);
+            // Fetch Weather Data with Error Handling
+            $apiData = @file_get_contents($apiUrl);
 
-        // Extracting the data
-        $demo = $_POST['demo'];
-        $cityName = $weatherResult['name'];  // City name
-        $country = $weatherResult['sys']['country'];  // Country code
-        
-        $temperatureInKelvin = $weatherResult['main']['temp'];  // Temperature in Kelvin
-        $temperature  = $temperatureInKelvin - 273.15;  // Convert to Celsius
+            if ($apiData === FALSE) {
+                // Error fetching the data (e.g., invalid API request)
+                $error = 'Error fetching weather data (Region not available. Please check the city and country name).';
+                
+            } else {
+                $weatherResult = json_decode($apiData, true);
 
-        $weatherCondition = $weatherResult['weather'][0]['main'];  // Main weather condition
-        $weatherDescription = $weatherResult['weather'][0]['description'];  // Detailed weather description
-        $humidity = $weatherResult['main']['humidity'];  // Humidity percentage
-        $windSpeed = $weatherResult['wind']['speed'];  // Wind speed in m/s
-        $windDirection = $weatherResult['wind']['deg'];  // Wind direction in degrees
-        $cloudCover = $weatherResult['clouds']['all'];  // Cloud cover percentage
-        $pressure = $weatherResult['main']['pressure'];  // Atmospheric pressure in hPa
-        $visibility = $weatherResult['visibility'];  // Visibility in meters
-        $sunrise = date('H:i:s', $weatherResult['sys']['sunrise']);  // Sunrise time (converted to a readable format)
-        $sunset = date('H:i:s', $weatherResult['sys']['sunset']);  // Sunset time (converted to a readable format)
+                // Check if city exists in the API response
+                if ($weatherResult['cod'] == 200) {
+                    // City is valid, extract data
+                    $cityName = $weatherResult['name'];  // City name
+                    $country = $weatherResult['sys']['country'];  // Country code
 
-        $soilType = $_POST['soilType'];
-        $fieldSize = $_POST['fieldSize'];
-        $topography = $_POST['topography'];
-        $waterSource = $_POST['waterSource'];
-        $plantingDate = $_POST['plantingDate'];
-        $soilDepth = $_POST['soilDepth'];
-        $cropType = $_POST['cropType'];
-        $cropSpecie = $_POST['cropSpecie'];
-
+                    $temperatureInKelvin = $weatherResult['main']['temp'];  // Temperature in Kelvin
+                    $temperature = $temperatureInKelvin - 273.15;  // Convert to Celsius
+                    $weatherCondition = $weatherResult['weather'][0]['main'];  // Main weather condition
+                    $weatherDescription = $weatherResult['weather'][0]['description'];  // Detailed weather description
+                    $humidity = $weatherResult['main']['humidity'];  // Humidity percentage
+                    $windSpeed = $weatherResult['wind']['speed'];  // Wind speed in m/s
+                    $windDirection = $weatherResult['wind']['deg'];  // Wind direction in degrees
+                    $cloudCover = $weatherResult['clouds']['all'];  // Cloud cover percentage
+                    $pressure = $weatherResult['main']['pressure'];  // Atmospheric pressure in hPa
+                    $visibility = $weatherResult['visibility'];  // Visibility in meters
 
 
-         // Extract necessary data from form fields
-         $fieldData = [
-            'soilType' => $_POST['soilType'],
-            'fieldSize' => $_POST['fieldSize'],
-            'topography' => $_POST['topography'],
-            'waterSource' => $_POST['waterSource'],
-            'plantingDate' => $_POST['plantingDate'],
-            'soilDepth' => $_POST['soilDepth'],
-            'cropType' => $_POST['cropType'],
-            'cropSpecie' => $_POST['cropSpecie']
-        ];
+                    $timezone = new DateTimeZone('Africa/Lagos'); // Set your timezone
+                    $sunrise = (new DateTime("@{$weatherResult['sys']['sunrise']}"))->setTimezone($timezone)->format('H:i:s');
+                    $sunset = (new DateTime("@{$weatherResult['sys']['sunset']}"))->setTimezone($timezone)->format('H:i:s');
 
-        // Call makeDecision function to get decisions
-        $decisions = makeDecision($weatherResult, $fieldData);
+
+                    $soilType = $_POST['soilType'];
+                    $fieldSize = $_POST['fieldSize'];
+                    $topography = $_POST['topography'];
+                    $waterSource = $_POST['waterSource'];
+                    $plantingDate = $_POST['plantingDate'];
+                    $soilDepth = $_POST['soilDepth'];
+                    $cropType = $_POST['cropType'];
+                    $cropSpecie = $_POST['cropSpecie'];
+            
+            
+            
+                     // Extract necessary data from form fields
+                     $fieldData = [
+                        'soilType' => $_POST['soilType'],
+                        'fieldSize' => $_POST['fieldSize'],
+                        'topography' => $_POST['topography'],
+                        'waterSource' => $_POST['waterSource'],
+                        'plantingDate' => $_POST['plantingDate'],
+                        'soilDepth' => $_POST['soilDepth'],
+                        'cropType' => $_POST['cropType'],
+                        'cropSpecie' => $_POST['cropSpecie']
+                    ];
+            
+                    // Call makeDecision function to get decisions
+                    $decisions = makeDecision($weatherResult, $fieldData);
+
+                    // SQL statement with placeholders
+                    $sql = "INSERT INTO weather_and_field_data (city, country, temperature, weather_condition, weather_description, humidity, wind_speed, wind_direction, cloud_cover, pressure, visibility, sunrise, sunset, soil_type, field_size, topography, water_source, planting_date, soil_depth, crop_type, crop_specie)
+                            VALUES (:city, :country, :temperature, :weatherCondition, :weatherDescription, :humidity, :windSpeed, :windDirection, :cloudCover, :pressure, :visibility, :sunrise, :sunset, :soilType, :fieldSize, :topography, :waterSource, :plantingDate, :soilDepth, :cropType, :cropSpecie)";
+
+                    // Prepare statement
+                    $stmt = $conn->prepare($sql);
+
+                    // Bind parameters
+                    $stmt->bindParam(':city', $cityName);
+                    $stmt->bindParam(':country', $country);
+                    $stmt->bindParam(':temperature', $temperature);
+                    $stmt->bindParam(':weatherCondition', $weatherCondition);
+                    $stmt->bindParam(':weatherDescription', $weatherDescription);
+                    $stmt->bindParam(':humidity', $humidity);
+                    $stmt->bindParam(':windSpeed', $windSpeed);
+                    $stmt->bindParam(':windDirection', $windDirection);
+                    $stmt->bindParam(':cloudCover', $cloudCover);
+                    $stmt->bindParam(':pressure', $pressure);
+                    $stmt->bindParam(':visibility', $visibility);
+                    $stmt->bindParam(':sunrise', $sunrise);
+                    $stmt->bindParam(':sunset', $sunset);
+                    $stmt->bindParam(':soilType', $soilType);
+                    $stmt->bindParam(':fieldSize', $fieldSize);
+                    $stmt->bindParam(':topography', $topography);
+                    $stmt->bindParam(':waterSource', $waterSource);
+                    $stmt->bindParam(':plantingDate', $plantingDate);
+                    $stmt->bindParam(':soilDepth', $soilDepth);
+                    $stmt->bindParam(':cropType', $cropType);
+                    $stmt->bindParam(':cropSpecie', $cropSpecie);
+
+                    // Execute the prepared statement
+                    if ($stmt->execute()) {
+                        echo "<script>alert('Data inserted successfully!');</script>";
+                    } else {
+                        echo "<script>alert('Error inserting data.');</script>";
+                    }
+
+                } else {
+                    // City or country not found
+                    echo "Region not available. Please check the city and country name.";
+                }
+            }
+        }
 
     }
 
 
     
 }
-
-    // Assume $weatherResult, field data, and other variables are populated from the form and API.
-
-    // function makeDecision($weatherResult, $fieldData) {
-    //     $decisions = [];
-        
-    //     // Weather Data Evaluation
-    //     $temperature = $weatherResult['main']['temp'] - 273.15; // Convert to Celsius
-    //     $humidity = $weatherResult['main']['humidity'];
-    //     $weatherCondition = $weatherResult['weather'][0]['main'];
-
-    //     // Analyze Field Data
-    //     $soilType = $fieldData['soilType'];
-    //     $cropType = $fieldData['cropType'];
-    //     $plantingDate = $fieldData['plantingDate'];
-    //     $fieldSize = $fieldData['fieldSize'];
-    //     $waterSource = $fieldData['waterSource'];
-
-    //     // Decision Logic
-
-    //     // 1. Soil Type and Crop Compatibility
-    //     if ($cropType == 'Maize' && $soilType != 'Loamy') {
-    //         $decisions[] = "Maize grows best in loamy soil. Consider improving soil conditions.";
-    //     }
-
-    //     // 2. Weather Condition for Planting
-    //     if ($temperature < 10) {
-    //         $decisions[] = "The current temperature ({$temperature}°C) is too cold for planting maize.";
-    //     } elseif ($temperature > 30) {
-    //         $decisions[] = "The temperature is too high. Consider waiting for cooler weather.";
-    //     } else {
-    //         $decisions[] = "The temperature is suitable for planting.";
-    //     }
-
-    //     // 3. Humidity
-    //     if ($humidity > 70) {
-    //         $decisions[] = "High humidity may lead to fungal infections. Take preventive measures.";
-    //     }
-
-    //     // 4. Water Source Evaluation
-    //     if ($waterSource == 'Rainfed' && $weatherCondition != 'Rain') {
-    //         $decisions[] = "Rainfed fields may suffer from drought. Consider irrigation.";
-    //     }
-
-    //     // 5. Planting Date
-    //     $currentDate = date('Y-m-d');
-    //     if (strtotime($plantingDate) > strtotime($currentDate)) {
-    //         $decisions[] = "Planting date is in the future. Ensure you plant on time.";
-    //     } else {
-    //         $decisions[] = "The planting date is suitable.";
-    //     }
-
-    //     return $decisions;
-    // }
-
 
 
     function makeDecision($weatherResult, $fieldData) {
@@ -179,6 +189,16 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
         $waterSource = $fieldData['waterSource'];
         $soilDepth = $fieldData['soilDepth'];
         $topography = $fieldData['topography'];
+
+
+        // Define ideal conditions for maize
+        $idealConditions = [
+            'cropType' => 'Maize',
+            'minTemp' => 18,
+            'maxTemp' => 27,
+            'minHumidity' => 40,
+            'maxHumidity' => 70,
+        ];
     
         // Best Practices and Guidelines for the Crop
         $decisions[] = "Here are the best practices for planting and maintaining {$cropType} ({$cropSpecies} if applicable):";
@@ -195,6 +215,14 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
             $decisions[] = "8. **Pest Control**: Consider using **organic or chemical fumigants** to control pests, especially during the early stages.";
             $decisions[] = "9. **Land Preparation**: Prepare the land by **tilling** to improve soil aeration and remove weeds.";
             $decisions[] = "10. **Harvesting**: Maize is typically ready for harvest **100-120 days after planting** depending on the variety. Harvest when kernels are fully matured and dry.";
+
+
+            // Compare weather conditions with ideal conditions
+            $currentWeatherDecisions = compareWeather($weatherResult, $idealConditions);
+            foreach ($currentWeatherDecisions as $decision) {
+                $decisions[] = $decision;
+            }
+            
         } else {
             $decisions[] = "Please research the best practices for planting {$cropType}.";
         }
@@ -254,6 +282,31 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
     }
     
 
+    // Compare weather conditions
+    function compareWeather($weatherResult, $idealConditions) {
+        $currentTemp = $weatherResult['main']['temp'] - 273.15; // Current temp in Celsius
+        $currentHumidity = $weatherResult['main']['humidity'];
+        
+        $decision = [];
+
+        // Compare temperature
+        if ($currentTemp < $idealConditions['minTemp']) {
+            $decision[] = "The current temperature is too low for {$idealConditions['cropType']}. Consider protecting crops from frost.";
+        } elseif ($currentTemp > $idealConditions['maxTemp']) {
+            $decision[] = "The current temperature is too high. You may need to irrigate to prevent heat stress.";
+        } else {
+            $decision[] = "The temperature is suitable for {$idealConditions['cropType']}.";
+        }
+
+        // Compare humidity
+        if ($currentHumidity < $idealConditions['minHumidity']) {
+            $decision[] = "Humidity is too low for optimal crop growth. Ensure sufficient irrigation.";
+        } elseif ($currentHumidity > $idealConditions['maxHumidity']) {
+            $decision[] = "High humidity can cause fungal issues. Consider applying fungicides.";
+        }
+
+        return $decision;
+    }
 ?>
 
 
@@ -396,7 +449,8 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
                             echo "Sunrise: " . $sunrise . "<br>";
                             echo "Sunset: " . $sunset . "<br>";
                             echo "City: " . $cityName . "<br>";
-                            echo "Country: " . $country . "<br><br>";
+                            echo "Country: " . $country . "<br>"; 
+                            echo "Today's Date: " . $currentDate . "<br><br>";
                             
                             // Output the demo and field data
                             echo "<h3>Field Data:</h3>";
@@ -580,15 +634,46 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
                                                     echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
                                                 }
 
+                                                // if ($weatherResult) {
+                                                //     echo '<div class="alert alert-light" role="alert"><pre>';
+
+                                                //     if (!empty($decisions)) {
+                                                //         echo implode("\n", $decisions); // Convert the array to a readable format
+                                                //     }
+
+                                                //     echo '</pre></div>';
+                                                // }
+
+
+
                                                 if ($weatherResult) {
                                                     echo '<div class="alert alert-light" role="alert"><pre>';
-
+                                                    
                                                     if (!empty($decisions)) {
                                                         echo implode("\n", $decisions); // Convert the array to a readable format
+                                                
+                                                        // Assuming you have the $weatherDataId available from the previous insert
+                                                        $weatherDataId = $conn->lastInsertId(); // Get the last inserted ID from weather_data table
+                                                
+                                                        // Prepare SQL statement to insert decisions
+                                                        $sql = "INSERT INTO decisions (weather_and_field_data_id, decision_text) VALUES (:weather_and_field_data_id, :decision_text)";
+                                                
+                                                        // Prepare the statement
+                                                        $stmt = $conn->prepare($sql);
+                                                
+                                                        // Bind parameters and execute for each decision
+                                                        foreach ($decisions as $decision) {
+                                                            $stmt->bindParam(':weather_and_field_data_id', $weatherDataId);
+                                                            $stmt->bindParam(':decision_text', $decision);
+                                                            $stmt->execute();
+                                                        }
+                                                
+                                                        echo "Decisions saved successfully!";
                                                     }
-
+                                                
                                                     echo '</pre></div>';
                                                 }
+                                                
                                             ?>
     
                                         </div>
@@ -690,22 +775,30 @@ if(array_key_exists('submit', $_POST) || array_key_exists('sbt', $_POST))
         <!-- current environment weather information widget -->
 
         <div id="weatherWidget">
-            <h3>Weather in <?php echo $city1; ?></h3>
-            <p>Condition: <?php echo ucfirst($description1); ?></p>
-            <p>Temperature: <?php echo round($temperatureCelsius1, 1); ?>°C</p>
-            <p>Humidity: <?php echo $humidity1; ?>%</p>
-            <?php
-                echo "Weather Condition: " . $weatherCondition1 . "<br>";
-                echo "Wind Speed: " . $windSpeed1 . " m/s<br>";
-                echo "Wind Direction: " . $windDirection1 . "°<br>";
-                echo "Cloud Cover: " . $cloudCover1 . "%<br>";
-                echo "Pressure: " . $pressure1 . " hPa<br>";
-                echo "Visibility: " . $visibility1 . " meters<br>";
-                echo "Sunrise: " . $sunrise1 . "<br>";
-                echo "Sunset: " . $sunset1 . "<br>";
-                echo "Country: " . $country1 . "<br><br>";
-            ?>
+            <h3>Day-Day Weather Condition in <?php echo htmlspecialchars($city1); ?></h3>
+            <p>
+                <?php 
+                    // Build the output string
+                    $output = "Condition: " . ucfirst($description1) . "<br>" .
+                            "Temperature: " . round($temperatureCelsius1, 1) . "°C<br>" .
+                            "Humidity: " . $humidity1 . "%<br>" .
+                            "Weather Condition: " . $weatherCondition1 . "<br>" .
+                            "Wind Speed: " . $windSpeed1 . " m/s<br>" .
+                            "Wind Direction: " . $windDirection1 . "°<br>" .
+                            "Cloud Cover: " . $cloudCover1 . "%<br>" .
+                            "Pressure: " . $pressure1 . " hPa<br>" .
+                            "Visibility: " . $visibility1 . " meters<br>" .
+                            "Sunrise: " . $sunrise1 . "<br>" .
+                            "Sunset: " . $sunset1 . "<br>" .
+                            "Country: " . $country1 . "<br>" .
+                            "<b> Today's Date: " . $currentDate . "<b>";
+
+                    // Echo the complete output
+                    echo $output;
+                ?>
+            </p>
         </div>
+
         <!-- end of current environment weather information widget -->
 
         <!-- Floating Button -->
