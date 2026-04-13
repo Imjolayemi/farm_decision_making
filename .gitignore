@@ -1,1 +1,22 @@
+# Environment variables
 .env
+*/.env
+*.local
+
+# Node modules
+node_modules/
+dist/
+
+# Python virtual env & cache
+venv/
+__pycache__/
+*.pyc
+
+# Local project documents to ignore
+*.pdf
+implementation_plan.md
+task.md
+
+# Firebase / OS files
+.firebase/
+.DS_Store
