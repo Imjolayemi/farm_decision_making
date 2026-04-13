@@ -14,8 +14,11 @@ __pycache__/
 
 # Local project documents to ignore
 *.pdf
-implementation_plan.md
-task.md
+*.md
+!README.md
+
+# Utility Scripts
+convert_pdf.py
 
 # Firebase / OS files
 .firebase/
