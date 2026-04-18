@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 /* =============================================
    FARMWISE AI — DESIGN SYSTEM
    ============================================= */
@@ -34,10 +32,10 @@
   --grad-card: linear-gradient(160deg, #132218 0%, #1a2e20 100%);
   --grad-hero: linear-gradient(160deg, #0b1a13 0%, #132218 50%, #1a2e20 100%);
   --grad-secondary: linear-gradient(135deg, #f5a623 0%, #fbbf48 100%);
-  --grad-glow: radial-gradient(ellipse at center, rgba(26,122,74,0.25) 0%, transparent 70%);
+  --grad-glow: radial-gradient(ellipse at center, rgba(26, 122, 74, 0.25) 0%, transparent 70%);
 
   /* Shadows */
-  --shadow-card: 0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(26,122,74,0.1);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(26, 122, 74, 0.1);
   --shadow-glow: 0 0 30px rgba(34, 160, 94, 0.2);
   --shadow-btn: 0 4px 16px rgba(26, 122, 74, 0.4);
 
@@ -54,9 +52,17 @@
 /* =============================================
    RESET & BASE
    ============================================= */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   font-family: 'Inter', sans-serif;
@@ -67,20 +73,35 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Outfit', sans-serif;
+}
 
 /* =============================================
    SCROLLBAR
    ============================================= */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--clr-bg); }
-::-webkit-scrollbar-thumb { background: var(--clr-primary); border-radius: 10px; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--clr-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--clr-primary);
+  border-radius: 10px;
+}
 
 /* =============================================
    LAYOUT
    ============================================= */
 body {
-  background: #020704; /* Darker outside shell on desktop */
+  background: #020704;
+  /* Darker outside shell on desktop */
 }
 
 .app-shell {
@@ -89,7 +110,7 @@ body {
   min-height: 100vh;
   position: relative;
   background: var(--clr-bg);
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
 }
 
 .page-content {
@@ -102,6 +123,7 @@ body {
     max-width: 100%;
     box-shadow: none;
   }
+
   .page-content {
     padding: 1rem 1rem 6rem;
   }
@@ -155,7 +177,9 @@ body {
   box-shadow: 0 6px 24px rgba(26, 122, 74, 0.55);
 }
 
-.btn-primary:active { transform: scale(0.97); }
+.btn-primary:active {
+  transform: scale(0.97);
+}
 
 .btn-secondary {
   display: inline-flex;
@@ -238,7 +262,9 @@ body {
   box-shadow: 0 0 0 3px rgba(34, 160, 94, 0.15);
 }
 
-.form-input::placeholder { color: var(--clr-text-dim); }
+.form-input::placeholder {
+  color: var(--clr-text-dim);
+}
 
 /* =============================================
    SECTION HEADER
@@ -276,10 +302,25 @@ body {
   font-weight: 600;
 }
 
-.badge-success { background: rgba(26,122,74,0.2); color: #22a05e; }
-.badge-warning { background: rgba(245,166,35,0.2); color: #f5a623; }
-.badge-danger  { background: rgba(239,68,68,0.2);  color: #ef4444; }
-.badge-info    { background: rgba(45,212,191,0.18); color: #2dd4bf; }
+.badge-success {
+  background: rgba(26, 122, 74, 0.2);
+  color: #22a05e;
+}
+
+.badge-warning {
+  background: rgba(245, 166, 35, 0.2);
+  color: #f5a623;
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.badge-info {
+  background: rgba(45, 212, 191, 0.18);
+  color: #2dd4bf;
+}
 
 /* =============================================
    STAT CARD
@@ -325,10 +366,25 @@ body {
   flex-shrink: 0;
 }
 
-.icon-box-green  { background: rgba(26,122,74,0.2);  color: #22a05e; }
-.icon-box-amber  { background: rgba(245,166,35,0.2); color: #f5a623; }
-.icon-box-teal   { background: rgba(45,212,191,0.18);color: #2dd4bf; }
-.icon-box-red    { background: rgba(239,68,68,0.2);  color: #ef4444; }
+.icon-box-green {
+  background: rgba(26, 122, 74, 0.2);
+  color: #22a05e;
+}
+
+.icon-box-amber {
+  background: rgba(245, 166, 35, 0.2);
+  color: #f5a623;
+}
+
+.icon-box-teal {
+  background: rgba(45, 212, 191, 0.18);
+  color: #2dd4bf;
+}
+
+.icon-box-red {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
 
 /* =============================================
    DIVIDER
@@ -343,39 +399,87 @@ body {
    ANIMATIONS
    ============================================= */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes pulse-green {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(34,160,94,0.4); }
-  50%       { box-shadow: 0 0 0 10px rgba(34,160,94,0); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 160, 94, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgba(34, 160, 94, 0);
+  }
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
-.animate-fade-up  { animation: fadeInUp 0.5s ease forwards; }
-.animate-fade-in  { animation: fadeIn 0.4s ease forwards; }
-.animate-pulse-green { animation: pulse-green 2s infinite; }
+.animate-fade-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.animate-pulse-green {
+  animation: pulse-green 2s infinite;
+}
 
 /* Stagger children */
-.stagger > *:nth-child(1) { animation-delay: 0.05s; }
-.stagger > *:nth-child(2) { animation-delay: 0.10s; }
-.stagger > *:nth-child(3) { animation-delay: 0.15s; }
-.stagger > *:nth-child(4) { animation-delay: 0.20s; }
-.stagger > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger>*:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.stagger>*:nth-child(2) {
+  animation-delay: 0.10s;
+}
+
+.stagger>*:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.stagger>*:nth-child(4) {
+  animation-delay: 0.20s;
+}
+
+.stagger>*:nth-child(5) {
+  animation-delay: 0.25s;
+}
 
 /* Skeleton loader */
 .skeleton {
