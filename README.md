@@ -34,7 +34,13 @@ npm install
 npm run dev
 ```
 
-*Note: You must inject your unique Firebase SDK keys inside `frontend/.env`. If you just want to test the UI flow, launch the app to the Sign In page and click 'Enter Demo Mode Without Firebase' to bypass live authentication.*
+> **Note on Authentication:** The application is fully wired for **real Firebase Authentication**. However, out of the box, it operates in "Demo Mode" so developers and testers can experience the UI immediately. 
+> 
+> To enable live authentication:
+> 1. Create a Firebase project.
+> 2. Rename `frontend/.env.example` to `frontend/.env` and paste in your valid Firebase configuration keys.
+> 
+> Until then, simply click **'Enter Demo Mode Without Firebase'** on the Sign In page to securely bypass live authentication.
 
 ### 2. The FastAPI Server (Backend)
 ```bash
