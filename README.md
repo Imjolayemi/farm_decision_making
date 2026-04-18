@@ -52,8 +52,11 @@ uvicorn app.main:app --reload --port 8000
 ```
 API Documentation will instantly host at `http://localhost:8000/docs`
 
-### 3. ML Model Retraining
-All ML workflows live directly inside the root `ml/` tracking directory. Launch any Notebook directly through VS Code or Jupyter Lab, and run all core cells to recreate the serialized `.pkl` and `.h5` objects natively.
+### 3. Machine Learning (Current Development Phase)
+> **Note on AI/ML Mocking:** The API backend is currently operating in "Mock Mode" using highly accurate, hard-coded agricultural rules to simulate the ML responses. This allows evaluators to test the API and UI flows instantly.
+> 
+> **To transition from simulated rules to real ML inference:**
+> All ML workflows live directly inside the root `ml/` tracking directory. Launch any Notebook directly through VS Code or Jupyter Lab, and run all core cells. This will train the models on real datasets and recreate the serialized `.pkl` and `.h5` objects natively for the backend to use.
 
 ---
 
